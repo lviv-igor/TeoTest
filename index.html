@@ -3,444 +3,698 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Тест про Бога</title>
+<title>THE GOD TEST</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #222; min-height: 100vh; }
-  .screen { display: none; flex-direction: column; min-height: 100vh; padding: 24px 20px; max-width: 600px; margin: 0 auto; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #222;
+    position: sticky;
+    top: 0;
+    background: #000;
+    z-index: 100;
+  }
+  .header-logo {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .header-logo span { color: #cc0000; }
+  .header-back {
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+    background: none;
+    border: none;
+    display: none;
+  }
+  .header-icon {
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* ===== SCREENS ===== */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
   .screen.active { display: flex; }
-  .logo { text-align: center; margin-bottom: 16px; }
-  .logo h1 { font-size: 2rem; font-weight: 800; color: #1a3c5e; }
-  .logo p { color: #555; font-size: 0.95rem; margin-top: 6px; }
-  .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); flex: 1; display: flex; flex-direction: column; gap: 16px; }
-  .progress { font-size: 0.8rem; color: #888; text-align: right; }
-  .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; margin-bottom: 8px; }
-  .progress-fill { height: 100%; background: #1a3c5e; border-radius: 3px; transition: width 0.3s; }
-  .question { font-size: 1.1rem; font-weight: 600; color: #1a3c5e; line-height: 1.5; }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn { background: #f0f4f8; border: 2px solid transparent; border-radius: 12px; padding: 12px 16px; text-align: left; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; color: #222; }
-  .option-btn:hover { border-color: #1a3c5e; background: #e8eef5; }
-  .option-btn.selected { border-color: #1a3c5e; background: #d0dcea; font-weight: 600; }
-  .custom-input { border: 2px solid #e0e0e0; border-radius: 12px; padding: 10px 14px; font-size: 0.95rem; width: 100%; outline: none; transition: border 0.2s; }
-  .custom-input:focus { border-color: #1a3c5e; }
-  .notes-label { font-size: 0.85rem; color: #888; }
-  .notes-input { border: 1px solid #e0e0e0; border-radius: 10px; padding: 10px; font-size: 0.9rem; width: 100%; min-height: 70px; resize: vertical; outline: none; }
-  .notes-input:focus { border-color: #1a3c5e; }
-  .scale-container { display: flex; flex-direction: column; gap: 8px; }
-  .scale-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: #888; }
-  .scale-buttons { display: flex; gap: 6px; justify-content: space-between; }
-  .scale-btn { flex: 1; padding: 10px 0; border: 2px solid #e0e0e0; border-radius: 8px; background: white; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
-  .scale-btn:hover { border-color: #1a3c5e; }
-  .scale-btn.selected { background: #1a3c5e; color: white; border-color: #1a3c5e; }
-  .btn-primary { background: #1a3c5e; color: white; border: none; border-radius: 12px; padding: 14px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; margin-top: auto; }
-  .btn-primary:hover { background: #15324f; }
-  .btn-primary:disabled { background: #aaa; cursor: not-allowed; }
-  .btn-secondary { background: white; color: #1a3c5e; border: 2px solid #1a3c5e; border-radius: 12px; padding: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; }
-  .btn-secondary:hover { background: #f0f4f8; }
-  /* Welcome screen */
-  .welcome-title { font-size: 2.2rem; font-weight: 800; color: #1a3c5e; text-align: center; margin-bottom: 8px; }
-  .welcome-sub { text-align: center; color: #555; font-size: 1rem; line-height: 1.6; margin-bottom: 24px; }
-  .path-cards { display: flex; flex-direction: column; gap: 12px; }
-  .path-card { background: white; border: 2px solid #e0e0e0; border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.2s; }
-  .path-card:hover { border-color: #1a3c5e; box-shadow: 0 4px 12px rgba(26,60,94,0.15); }
-  .path-card h3 { font-size: 1.1rem; color: #1a3c5e; margin-bottom: 4px; }
-  .path-card p { font-size: 0.85rem; color: #777; }
-  /* Result screen */
-  .result-title { font-size: 1.4rem; font-weight: 800; color: #1a3c5e; text-align: center; }
-  .result-summary { background: #f0f4f8; border-radius: 12px; padding: 16px; font-size: 0.9rem; line-height: 1.7; }
-  .result-section { margin-top: 16px; }
-  .result-section h3 { font-size: 1rem; font-weight: 700; color: #1a3c5e; margin-bottom: 8px; }
-  .answer-item { background: #f9f9f9; border-left: 3px solid #1a3c5e; padding: 10px 12px; border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 0.88rem; line-height: 1.5; }
-  .answer-item strong { color: #1a3c5e; }
-  .contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-  .contact-form input { border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 0.95rem; outline: none; }
-  .contact-form input:focus { border-color: #1a3c5e; }
-  .invite-box { background: #e8f5e9; border-radius: 12px; padding: 16px; text-align: center; }
-  .invite-box p { color: #2e7d32; font-size: 0.9rem; line-height: 1.6; }
-  .tag { display: inline-block; background: #1a3c5e; color: white; border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; margin-bottom: 8px; }
+
+  /* ===== HOME SCREEN ===== */
+  #screen-home {
+    flex-direction: column;
+  }
+
+  .mosaic {
+    width: 100%;
+    height: 220px;
+    background: #111;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+    overflow: hidden;
+  }
+  .mosaic-cell {
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #444;
+    overflow: hidden;
+  }
+  .mosaic-cell:nth-child(1)  { background: #1a0000; color: #cc0000; font-size: 22px; }
+  .mosaic-cell:nth-child(3)  { background: #0a0a1a; color: #6666cc; font-size: 16px; }
+  .mosaic-cell:nth-child(5)  { background: #001a00; color: #44aa44; font-size: 14px; }
+  .mosaic-cell:nth-child(7)  { background: #1a1a00; color: #aaaa44; font-size: 20px; }
+  .mosaic-cell:nth-child(9)  { background: #1a0a00; color: #cc6600; font-size: 18px; }
+  .mosaic-cell:nth-child(11) { background: #0a1a1a; color: #44aaaa; font-size: 22px; }
+  .mosaic-cell:nth-child(13) { background: #1a001a; color: #aa44aa; font-size: 16px; }
+  .mosaic-cell:nth-child(2)  { font-size: 12px; color: #666; }
+  .mosaic-cell:nth-child(4)  { font-size: 24px; color: #888; }
+  .mosaic-cell:nth-child(6)  { font-size: 14px; color: #555; }
+  .mosaic-cell:nth-child(8)  { font-size: 20px; color: #777; }
+  .mosaic-cell:nth-child(10) { font-size: 16px; color: #666; }
+  .mosaic-cell:nth-child(12) { font-size: 12px; color: #555; }
+  .mosaic-cell:nth-child(14) { font-size: 22px; color: #888; }
+  .mosaic-cell:nth-child(15) { font-size: 16px; color: #666; }
+
+  .home-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  .home-title {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .home-title span { color: #cc0000; }
+
+  .home-reg { font-size: 14px; color: #888; margin-bottom: 20px; }
+
+  .home-subtitle {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .home-subtitle em {
+    color: #cc0000;
+    font-style: normal;
+    font-weight: bold;
+  }
+
+  .home-desc {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 50px;
+    line-height: 1.5;
+    max-width: 300px;
+  }
+
+  .btn-start {
+    background: #cc0000;
+    color: #fff;
+    border: none;
+    padding: 18px 60px;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 320px;
+    transition: background 0.2s;
+  }
+  .btn-start:hover { background: #aa0000; }
+
+  .home-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #222;
+  }
+  .home-footer-item {
+    padding: 24px 20px;
+    text-align: center;
+    border-right: 1px solid #222;
+    cursor: pointer;
+  }
+  .home-footer-item:last-child { border-right: none; }
+  .home-footer-item .label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .home-footer-item .title {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .home-footer-item .title span { color: #cc0000; }
+
+  /* ===== QUESTION SCREEN ===== */
+  #screen-question {
+    flex-direction: column;
+  }
+
+  .question-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #222;
+  }
+  .q-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .q-help {
+    width: 20px;
+    height: 20px;
+    background: #cc0000;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: #222;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #cc0000;
+    transition: width 0.4s ease;
+  }
+
+  .question-body {
+    flex: 1;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .question-text {
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 36px;
+    letter-spacing: 1px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .option input[type="radio"] { display: none; }
+  .radio-custom {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #888;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+  .radio-custom::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cc0000;
+    display: none;
+  }
+  .option input:checked + .radio-custom {
+    border-color: #cc0000;
+  }
+  .option input:checked + .radio-custom::after {
+    display: block;
+  }
+  .option-label {
+    font-size: 18px;
+    color: #ddd;
+    letter-spacing: 0.5px;
+  }
+
+  .comment-area {
+    width: 100%;
+    background: #fff;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 15px;
+    resize: none;
+    height: 90px;
+    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+  }
+  .comment-area::placeholder { color: #aaa; }
+
+  .btn-next {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: right;
+    padding: 10px 0;
+    transition: color 0.2s;
+    align-self: flex-end;
+  }
+  .btn-next:hover { color: #888; }
+
+  /* ===== RESULT SCREEN ===== */
+  #screen-result {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  .result-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+  .result-title {
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .result-title span { color: #cc0000; }
+  .result-profile {
+    font-size: 20px;
+    font-weight: bold;
+    color: #cc0000;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .result-text {
+    font-size: 15px;
+    color: #bbb;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    max-width: 320px;
+  }
+  .result-verse {
+    background: #111;
+    border-left: 3px solid #cc0000;
+    padding: 16px 20px;
+    text-align: left;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    max-width: 320px;
+  }
+  .result-verse p {
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .result-verse cite {
+    font-size: 12px;
+    color: #cc0000;
+    font-style: normal;
+    display: block;
+    margin-top: 8px;
+  }
+  .btn-restart {
+    background: #cc0000;
+    color: #fff;
+    border: none;
+    padding: 16px 40px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 320px;
+  }
 </style>
 </head>
 <body>
 
-<!-- WELCOME SCREEN -->
-<div class="screen active" id="screen-welcome">
-  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; max-width:600px; margin:0 auto; width:100%; padding:24px 20px;">
-    <div class="welcome-title">🔍 Тест про Бога</div>
-    <p class="welcome-sub">Кілька запитань, які варто поставити собі хоча б раз у житті.<br>Немає правильних чи неправильних відповідей — тільки чесні.</p>
-    <div class="path-cards">
-      <div class="path-card" onclick="startPath('believer')">
-        <h3>🙏 Я вірю в Бога</h3>
-        <p>Хочу глибше розібратись у своїй вірі</p>
-      </div>
-      <div class="path-card" onclick="startPath('skeptic')">
-        <h3>🤔 Я не впевнений / не вірю</h3>
-        <p>Цікаво дослідити ці питання чесно</p>
-      </div>
+<!-- ===== HOME SCREEN ===== -->
+<div id="screen-home" class="screen active">
+  <div class="header">
+    <div style="width:40px"></div>
+    <div class="header-logo">THE<span>GOD</span>TEST<sup style="font-size:10px">®</sup></div>
+    <div class="header-icon">🌐</div>
+  </div>
+
+  <div class="mosaic">
+    <div class="mosaic-cell">✝</div>
+    <div class="mosaic-cell">☯</div>
+    <div class="mosaic-cell">✡</div>
+    <div class="mosaic-cell">☪</div>
+    <div class="mosaic-cell">☸</div>
+    <div class="mosaic-cell">🕉</div>
+    <div class="mosaic-cell">⚛</div>
+    <div class="mosaic-cell">E=mc²</div>
+    <div class="mosaic-cell">🧬</div>
+    <div class="mosaic-cell">🌌</div>
+    <div class="mosaic-cell">☦</div>
+    <div class="mosaic-cell">🔯</div>
+    <div class="mosaic-cell">☮</div>
+    <div class="mosaic-cell">∞</div>
+    <div class="mosaic-cell">?</div>
+  </div>
+
+  <div class="home-content">
+    <div class="home-title">THE<span>GOD</span>TEST<sup style="font-size:20px">®</sup></div>
+    <div class="home-subtitle">10 запитань. <em>Назавжди</em> жити з відповідями.</div>
+    <div class="home-desc">Цей тест — не суперечка. Це простір для чесного діалогу про найважливіші питання життя.</div>
+    <button class="btn-start" onclick="startTest()">РОЗПОЧАТИ ТЕСТ</button>
+  </div>
+
+  <div class="home-footer">
+    <div class="home-footer-item">
+      <div class="label">Завантажити</div>
+      <div class="title">БОГ<br><span>НЕ</span><br>МЕРТВИЙ</div>
+    </div>
+    <div class="home-footer-item">
+      <div class="label">Ресурси</div>
+      <div class="title">THE<span>GOD</span>TEST<br>МАТЕРІАЛИ</div>
     </div>
   </div>
 </div>
 
-<!-- QUESTION SCREEN -->
-<div class="screen" id="screen-question">
-  <div class="card">
-    <div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-      <div class="progress" id="progress-text"></div>
+<!-- ===== QUESTION SCREEN ===== -->
+<div id="screen-question" class="screen">
+  <div class="header">
+    <button class="header-back" id="btn-back" onclick="goBack()">‹</button>
+    <div class="header-logo">THE<span>GOD</span>TEST<sup style="font-size:10px">®</sup></div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <div class="question-body">
+    <div class="q-label">
+      ЗАПИТАННЯ <span id="q-number">1</span>
+      <span class="q-help">?</span>
     </div>
-    <div class="question" id="question-text"></div>
-    <div id="answer-area"></div>
-    <div>
-      <div class="notes-label">📝 Ваші нотатки (необов'язково):</div>
-      <textarea class="notes-input" id="notes-input" placeholder="Запишіть свої думки..."></textarea>
-    </div>
-    <button class="btn-primary" id="next-btn" onclick="nextQuestion()">Далі →</button>
+    <br>
+    <div class="question-text" id="q-text"></div>
+    <div class="options" id="q-options"></div>
+    <textarea class="comment-area" id="q-comment" placeholder="Додаткові коментарі"></textarea>
+    <button class="btn-next" onclick="nextQuestion()">ДАЛІ ›</button>
   </div>
 </div>
 
-<!-- RESULT SCREEN -->
-<div class="screen" id="screen-result">
-  <div class="card" style="gap:14px;">
-    <div class="result-title" id="result-title"></div>
-    <div class="result-summary" id="result-summary"></div>
-    <div id="result-extra"></div>
-    <div id="contact-section"></div>
-    <div id="invite-section"></div>
-    <button class="btn-secondary" onclick="restartTest()" style="margin-top:8px;">🔄 Пройти ще раз</button>
+<!-- ===== RESULT SCREEN ===== -->
+<div id="screen-result" class="screen">
+  <div class="header" style="width:100%; position:sticky; top:0; background:#000; z-index:100;">
+    <div style="width:40px"></div>
+    <div class="header-logo">THE<span>GOD</span>TEST<sup style="font-size:10px">®</sup></div>
+    <div style="width:40px"></div>
+  </div>
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 30px; text-align:center;">
+    <div class="result-icon">✝</div>
+    <div class="result-title">ВАШ <span>ПРОФІЛЬ</span></div>
+    <div class="result-profile" id="result-profile"></div>
+    <div class="result-text" id="result-text"></div>
+    <div class="result-verse" id="result-verse"></div>
+    <button class="btn-restart" onclick="restartTest()">ПРОЙТИ ЗНОВУ</button>
   </div>
 </div>
 
 <script>
-const questions = {
-  believer: [
-    {
-      q: "Чи вірите ви в Бога?",
-      type: "options",
-      options: ["Так, впевнено", "Швидше так", "Не впевнений(а)", "Свій варіант"]
-    },
-    {
-      q: "Як би ви описали Бога?",
-      type: "options",
-      options: ["Люблячий і особистий", "Святий і справедливий", "Якась вища енергія", "Байдужий до людей", "Свій варіант"]
-    },
-    {
-      q: "Чого від нас очікує Бог?",
-      type: "options",
-      options: ["Віри і довіри", "Дотримання моральних норм", "Виконання релігійних правил", "Нічого особливого", "Свій варіант"]
-    },
-    {
-      q: "Наскільки ви задовольняєте те, чого очікує від вас Бог?",
-      type: "scale",
-      scaleMin: "Зовсім ні",
-      scaleMax: "Повністю"
-    },
-    {
-      q: "Чи тільки одна релігія приводить до істини?",
-      type: "options",
-      options: ["Так, є одна істина", "Всі релігії ведуть до Бога", "Не знаю", "Свій варіант"]
-    },
-    {
-      q: "Чи вірите ви в рай?",
-      type: "options",
-      options: ["Так, вірю", "Не впевнений(а)", "Ні", "Свій варіант"]
-    },
-    {
-      q: "Чи кожна людина потрапить до раю?",
-      type: "options",
-      options: ["Так, всі", "Тільки хороші люди", "Тільки ті, хто вірить", "Ні", "Свій варіант"]
-    },
-    {
-      q: "Чи ви потрапите до раю?",
-      type: "options",
-      options: ["Так, впевнений(а)", "Сподіваюсь", "Не знаю", "Ні", "Свій варіант"]
-    },
-    {
-      q: "Чому ви так думаєте?",
-      type: "options",
-      options: ["Бо я вірю в Ісуса Христа", "Бо я намагаюсь бути хорошою людиною", "Бо Бог добрий і пробачить всіх", "Не знаю", "Свій варіант"]
-    },
-    {
-      q: "Чи хотіли б ви знати, як на ці питання відповідає Біблія?",
-      type: "options",
-      options: ["Знаю і погоджуюсь", "Знаю і не погоджуюсь", "Не цікаво", "Хотів(ла) би довідатись"],
-      isFinal: true
-    }
-  ],
-  skeptic: [
-    {
-      q: "Чи вірите ви в Бога?",
-      type: "options",
-      options: ["Ні, не вірю", "Не впевнений(а)", "Швидше ні", "Свій варіант"]
-    },
-    {
-      q: "Яка головна причина вашої невіри або сумнівів?",
-      type: "options",
-      options: ["Наука пояснює все без Бога", "Існування зла і страждань", "Немає достатніх доказів", "Занадто багато різних релігій", "Свій варіант"]
-    },
-    {
-      q: "Чому взагалі щось існує, а не просто нічого?",
-      type: "options",
-      options: ["Всесвіт завжди існував", "Він виник сам по собі", "Це пояснює фізика", "Не знаю", "Свій варіант"]
-    },
-    {
-      q: "Чи має Всесвіт якийсь сенс або мету?",
-      type: "options",
-      options: ["Так, я відчуваю певний порядок", "Ні, це просто випадковість", "Не думав(ла) про це", "Свій варіант"]
-    },
-    {
-      q: "Звідки взялось життя?",
-      type: "options",
-      options: ["Випадкове поєднання хімічних елементів", "Закони природи це пояснюють", "Можливо, позаземне походження", "Не знаю", "Свій варіант"]
-    },
-    {
-      q: "Чи існує зло?",
-      type: "options",
-      options: ["Так, зло реально існує", "Зло — це лише відсутність добра", "Це суб'єктивна оцінка", "Свій варіант"]
-    },
-    {
-      q: "На чому базується ваша мораль?",
-      type: "options",
-      options: ["Суспільні норми і закони", "Еволюція і виживання виду", "Особисті почуття і совість", "Свій варіант"]
-    },
-    {
-      q: "Чи є людське життя особливим порівняно з тваринним або рослинним?",
-      type: "options",
-      options: ["Так, людина унікальна", "Ні, ми просто один з видів", "Не впевнений(а)", "Свій варіант"]
-    },
-    {
-      q: "Наскільки ви впевнені, що Бога не існує?",
-      type: "scale",
-      scaleMin: "Зовсім не впевнений",
-      scaleMax: "Абсолютно впевнений"
-    },
-    {
-      q: "Чи хотіли б ви почути, як теїсти відповідають на ці запитання?",
-      type: "options",
-      options: ["Так, цікаво", "Ні, дякую"],
-      isFinal: true
-    }
-  ]
-};
+// ===== ДАНІ ПИТАНЬ =====
+// Гілка визначається першим питанням
+// q1: "Так" → теїст, "Ні" → скептик, "Не впевнений" → агностик
 
-const theistAnswers = [
-  { q: "Чому взагалі щось існує?", a: "Теїсти стверджують: якщо щось існує зараз, то причина існування не може бути нічим. Бог — це першопричина, яка сама по собі не потребує причини." },
-  { q: "Чи має Всесвіт сенс?", a: "Порядок, математичні закони, точне налаштування Всесвіту — для теїстів це вказує на Розум, а не на випадковість." },
-  { q: "Звідки взялось життя?", a: "Інформація в ДНК є надзвичайно складною. Теїсти вважають, що такий рівень складності вказує на розумний задум." },
-  { q: "Чи існує зло?", a: "Якщо зло реально існує — значить існує і об'єктивне добро. А об'єктивне добро потребує абсолютного морального стандарту, яким є Бог." },
-  { q: "На чому базується мораль?", a: "Якщо мораль лише еволюційна або суспільна — вона відносна. Теїсти вважають, що совість вказує на вбудований Богом моральний закон." }
+const questions_theist = [
+  {
+    text: "Ви вірите в Бога?",
+    options: ["Так", "Ні", "Не впевнений(а)"]
+  },
+  {
+    text: "Як би ви описали Бога?",
+    options: ["Люблячий і особистий", "Вища сила / Енергія", "Справедливий суддя", "Байдужий до людей", "Свій варіант"]
+  },
+  {
+    text: "Чого від нас очікує Бог?",
+    options: ["Віри і довіри", "Добрих вчинків", "Дотримання правил", "Нічого особливого", "Свій варіант"]
+  },
+  {
+    text: "Наскільки ви виконуєте те, чого очікує Бог?",
+    options: ["Дуже добре", "Намагаюсь, але не завжди", "Погано", "Не знаю"]
+  },
+  {
+    text: "Чи тільки одна релігія приводить до істини?",
+    options: ["Так, лише одна", "Всі ведуть до Бога", "Не знаю", "Свій варіант"]
+  },
+  {
+    text: "Ви вірите в існування раю?",
+    options: ["Так", "Ні", "Не впевнений(а)"]
+  },
+  {
+    text: "Чи кожна людина потрапить до раю?",
+    options: ["Так, всі", "Лише добрі люди", "Лише ті, хто вірить", "Ні", "Не знаю"]
+  },
+  {
+    text: "Ви потрапите до раю?",
+    options: ["Так, впевнений(а)", "Сподіваюсь", "Не знаю", "Ні"]
+  },
+  {
+    text: "Чому ви так вважаєте?",
+    options: ["Я живу добре", "Я вірю в Ісуса Христа", "Бог милосердний", "Не знаю", "Свій варіант"]
+  },
+  {
+    text: "Чи хочете ви дізнатись, що Біблія говорить про це?",
+    options: ["Так, цікаво", "Можливо", "Ні, дякую"]
+  }
 ];
 
-const bibleAnswers = [
-  { q: "Чи є Бог люблячим?", a: "«Бо так полюбив Бог світ, що дав Сина Свого Єдинородного» (Івана 3:16). Бог — не байдужа сила, а Отець, який шукає стосунків." },
-  { q: "Чого очікує Бог?", a: "«Бо благодаттю ви спасенні через віру» (Єфесян 2:8). Бог очікує не досконалості, а довіри." },
-  { q: "Як потрапити до раю?", a: "«Я є дорога, і правда, і життя» (Івана 14:6). Шлях до Бога — через Ісуса Христа, а не через власні заслуги." },
-  { q: "Що таке гріх?", a: "Гріх — це не лише погані вчинки, а відстань між нами і Богом. Ісус прийшов, щоб цю відстань подолати." },
-  { q: "Що далі?", a: "Біблія запрошує: «Прийдіть до Мене всі стомлені» (Матвія 11:28). Наступний крок — не релігія, а особисті стосунки з Богом." }
+const questions_skeptic = [
+  {
+    text: "Ви вірите в Бога?",
+    options: ["Так", "Ні", "Не впевнений(а)"]
+  },
+  {
+    text: "Що найбільше заважає вам вірити в Бога?",
+    options: ["Наука пояснює все", "Існування зла і страждань", "Немає доказів", "Забагато релігій", "Свій варіант"]
+  },
+  {
+    text: "Чому існує щось, а не ніщо?",
+    options: ["Всесвіт існував завжди", "Виник сам по собі", "Фізичні закони", "Не знаю", "Свій варіант"]
+  },
+  {
+    text: "Чи бачите ви сенс або мету у Всесвіті?",
+    options: ["Так", "Ні", "Не впевнений(а)"]
+  },
+  {
+    text: "Звідки взялося перше живе?",
+    options: ["Випадковість", "Закони природи", "Позаземне походження", "Не знаю", "Свій варіант"]
+  },
+  {
+    text: "Чи існує об'єктивне зло?",
+    options: ["Так, воно реальне", "Ні, це суб'єктивно", "Не впевнений(а)"]
+  },
+  {
+    text: "На чому базується ваша мораль?",
+    options: ["Суспільні норми", "Еволюція", "Особисті почуття", "Розум", "Свій варіант"]
+  },
+  {
+    text: "Чи є людське життя особливим порівняно з іншим?",
+    options: ["Так, однозначно", "Ні, ми просто тварини", "Не впевнений(а)"]
+  },
+  {
+    text: "Наскільки ви впевнені, що Бога не існує?",
+    options: ["Абсолютно впевнений(а)", "Досить впевнений(а)", "Скоріше ні, ніж так", "Не знаю"]
+  },
+  {
+    text: "Чи хочете ви почути аргументи на користь існування Бога?",
+    options: ["Так, цікаво", "Можливо", "Ні, дякую"]
+  }
 ];
 
-let currentPath = '';
+// ===== СТАН =====
+let currentQuestions = [];
 let currentIndex = 0;
 let answers = [];
-let notes = [];
+let branch = "unknown";
 
-function startPath(path) {
-  currentPath = path;
+function startTest() {
   currentIndex = 0;
   answers = [];
-  notes = [];
-  showQuestion();
+  currentQuestions = questions_theist; // Перше питання однакове
+  showScreen("screen-question");
+  document.getElementById("btn-back").style.display = "block";
+  renderQuestion();
 }
 
-function showQuestion() {
-  const qs = questions[currentPath];
-  const q = qs[currentIndex];
-  const total = qs.length;
+function renderQuestion() {
+  const q = currentQuestions[currentIndex];
+  const total = currentQuestions.length;
 
-  document.getElementById('screen-welcome').classList.remove('active');
-  document.getElementById('screen-result').classList.remove('active');
-  document.getElementById('screen-question').classList.add('active');
+  document.getElementById("q-number").textContent = currentIndex + 1;
+  document.getElementById("q-text").textContent = q.text;
+  document.getElementById("q-comment").value = "";
 
-  document.getElementById('progress-text').textContent = `Питання ${currentIndex + 1} з ${total}`;
-  document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / total) * 100}%`;
-  document.getElementById('question-text').textContent = q.q;
-  document.getElementById('notes-input').value = notes[currentIndex] || '';
+  // Прогрес
+  const pct = ((currentIndex) / total) * 100;
+  document.getElementById("progress-fill").style.width = pct + "%";
 
-  const area = document.getElementById('answer-area');
-  area.innerHTML = '';
-
-  if (q.type === 'options') {
-    const div = document.createElement('div');
-    div.className = 'options';
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.textContent = opt;
-      if (answers[currentIndex] === opt) btn.classList.add('selected');
-      btn.onclick = () => {
-        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        answers[currentIndex] = opt;
-        if (opt === 'Свій варіант') {
-          customInput.style.display = 'block';
-          customInput.focus();
-        } else {
-          customInput.style.display = 'none';
-        }
-      };
-      div.appendChild(btn);
-    });
-    const customInput = document.createElement('input');
-    customInput.type = 'text';
-    customInput.className = 'custom-input';
-    customInput.placeholder = 'Введіть свою відповідь...';
-    customInput.style.display = 'none';
-    customInput.oninput = () => { answers[currentIndex] = customInput.value; };
-    div.appendChild(customInput);
-    area.appendChild(div);
-  } else if (q.type === 'scale') {
-    const div = document.createElement('div');
-    div.className = 'scale-container';
-    const labels = document.createElement('div');
-    labels.className = 'scale-labels';
-    labels.innerHTML = `<span>${q.scaleMin}</span><span>${q.scaleMax}</span>`;
-    const btns = document.createElement('div');
-    btns.className = 'scale-buttons';
-    for (let i = 1; i <= 10; i++) {
-      const btn = document.createElement('button');
-      btn.className = 'scale-btn';
-      btn.textContent = i;
-      if (answers[currentIndex] == i) btn.classList.add('selected');
-      btn.onclick = () => {
-        document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        answers[currentIndex] = i;
-      };
-      btns.appendChild(btn);
-    }
-    div.appendChild(labels);
-    div.appendChild(btns);
-    area.appendChild(div);
-  }
+  // Опції
+  const container = document.getElementById("q-options");
+  container.innerHTML = "";
+  q.options.forEach((opt, i) => {
+    const label = document.createElement("label");
+    label.className = "option";
+    label.innerHTML = `
+      <input type="radio" name="q-option" value="${i}">
+      <div class="radio-custom"></div>
+      <span class="option-label">${opt}</span>
+    `;
+    container.appendChild(label);
+  });
 }
 
 function nextQuestion() {
-  notes[currentIndex] = document.getElementById('notes-input').value;
-  const qs = questions[currentPath];
-  if (currentIndex < qs.length - 1) {
-    currentIndex++;
-    showQuestion();
-  } else {
+  const selected = document.querySelector('input[name="q-option"]:checked');
+  const comment = document.getElementById("q-comment").value;
+
+  const answer = {
+    question: currentQuestions[currentIndex].text,
+    answer: selected ? currentQuestions[currentIndex].options[selected.value] : null,
+    comment: comment
+  };
+  answers.push(answer);
+
+  // Після першого питання — визначаємо гілку
+  if (currentIndex === 0) {
+    const val = selected ? parseInt(selected.value) : 0;
+    if (val === 1) {
+      // "Ні" → скептик
+      branch = "skeptic";
+      currentQuestions = questions_skeptic;
+      currentQuestions[0] = questions_theist[0]; // Перше питання вже відповіли
+    } else {
+      branch = "theist";
+      currentQuestions = questions_theist;
+    }
+  }
+
+  currentIndex++;
+
+  if (currentIndex >= currentQuestions.length) {
     showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function goBack() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    answers.pop();
+    renderQuestion();
+  } else {
+    showScreen("screen-home");
   }
 }
 
 function showResult() {
-  document.getElementById('screen-question').classList.remove('active');
-  document.getElementById('screen-result').classList.add('active');
+  showScreen("screen-result");
 
-  const qs = questions[currentPath];
-  const lastAnswer = answers[qs.length - 1];
+  let profile = "";
+  let text = "";
+  let verse = "";
 
-  let title = '';
-  let summary = '';
-  let extra = '';
-  let contactHtml = '';
-  let inviteHtml = '';
+  // Аналіз відповідей
+  const lastAnswer = answers[answers.length - 1];
+  const wantsMore = lastAnswer && (lastAnswer.answer === "Так, цікаво" || lastAnswer.answer === "Можливо");
 
-  if (currentPath === 'believer') {
-    title = '🙏 Ваш духовний профіль';
-    summary = buildSummaryBeliever();
-
-    if (lastAnswer === 'Хотів(ла) би довідатись') {
-      extra = buildBibleAnswers();
-      contactHtml = `
-        <div class="result-section">
-          <h3>📬 Хочете продовжити розмову?</h3>
-          <p style="font-size:0.88rem;color:#555;margin-bottom:8px;">Залиште контакт — ми зв'яжемось і запросимо на особисту зустріч або групу «Біблійні основи»</p>
-          <div class="contact-form">
-            <input type="text" id="c-name" placeholder="Ваше ім'я">
-            <input type="tel" id="c-phone" placeholder="Телефон або Telegram">
-            <input type="email" id="c-email" placeholder="Email (необов'язково)">
-            <button class="btn-primary" onclick="submitContact()">Надіслати ✉️</button>
-          </div>
-        </div>`;
-    } else if (lastAnswer === 'Знаю і погоджуюсь' || lastAnswer === 'Знаю і не погоджуюсь') {
-      inviteHtml = `
-        <div class="invite-box">
-          <p>🏠 <strong>Запрошуємо вас до нашої церкви!</strong><br>
-          Ми збираємось щонеділі. Будемо раді познайомитись особисто і продовжити цю розмову.</p>
-        </div>`;
-    }
+  if (branch === "skeptic") {
+    profile = "ШУКАЧ ІСТИНИ";
+    text = "Ви ставите важливі питання. Це сміливо. Багато великих мислителів починали саме з сумніву — і знаходили відповіді там, де не очікували.";
+    verse = `<p>"Шукайте — і знайдете; стукайте — і відчинять вам."</p><cite>— Матвія 7:7</cite>`;
   } else {
-    title = '🔍 Ваш профіль мислення';
-    summary = buildSummarySkeptic();
-
-    if (lastAnswer === 'Так, цікаво') {
-      extra = buildTheistAnswers();
+    // Перевіряємо відповідь на питання "Чому потрапите до раю?"
+    const q9 = answers[8];
+    if (q9 && q9.answer === "Я вірю в Ісуса Христа") {
+      profile = "ВПЕВНЕНИЙ У ВІРІ";
+      text = "Ваша відповідь показує, що ви розумієте суть Євангелія. Спасіння — це не нагорода за добрі вчинки, а дар через віру в Ісуса Христа.";
+      verse = `<p>"Бо так полюбив Бог світ, що дав Сина Свого Єдинородного, щоб кожен, хто вірує в Нього, не загинув, але мав вічне життя."</p><cite>— Івана 3:16</cite>`;
+    } else {
+      profile = "ДУХОВНИЙ МАНДРІВНИК";
+      text = "Ви вірите в Бога і намагаєтесь жити добре. Але Біблія говорить, що стосунки з Богом — це не про досягнення, а про довіру. Є одна відповідь, яка змінює все.";
+      verse = `<p>"Бо благодаттю ви спасені через віру, і це не від вас — це дар Божий, не від діл, щоб ніхто не хвалився."</p><cite>— Ефесян 2:8-9</cite>`;
     }
   }
 
-  document.getElementById('result-title').textContent = title;
-  document.getElementById('result-summary').innerHTML = summary;
-  document.getElementById('result-extra').innerHTML = extra;
-  document.getElementById('contact-section').innerHTML = contactHtml;
-  document.getElementById('invite-section').innerHTML = inviteHtml;
-}
-
-function buildSummaryBeliever() {
-  const qs = questions.believer;
-  let html = '<strong>Ваші відповіді:</strong><br><br>';
-  qs.forEach((q, i) => {
-    if (answers[i]) {
-      html += `<div class="answer-item"><strong>${q.q}</strong><br>${answers[i]}${notes[i] ? '<br><em>Нотатки: ' + notes[i] + '</em>' : ''}</div>`;
-    }
-  });
-  return html;
-}
-
-function buildSummarySkeptic() {
-  const qs = questions.skeptic;
-  let html = '<strong>Ваші відповіді:</strong><br><br>';
-  qs.forEach((q, i) => {
-    if (answers[i]) {
-      html += `<div class="answer-item"><strong>${q.q}</strong><br>${answers[i]}${notes[i] ? '<br><em>Нотатки: ' + notes[i] + '</em>' : ''}</div>`;
-    }
-  });
-  return html;
-}
-
-function buildTheistAnswers() {
-  let html = '<div class="result-section"><h3>💬 Як теїсти відповідають на ці питання:</h3>';
-  theistAnswers.forEach(item => {
-    html += `<div class="answer-item"><strong>${item.q}</strong><br>${item.a}</div>`;
-  });
-  html += '</div>';
-  return html;
-}
-
-function buildBibleAnswers() {
-  let html = '<div class="result-section"><h3>📖 Що каже Біблія:</h3>';
-  bibleAnswers.forEach(item => {
-    html += `<div class="answer-item"><strong>${item.q}</strong><br>${item.a}</div>`;
-  });
-  html += '</div>';
-  return html;
-}
-
-function submitContact() {
-  const name = document.getElementById('c-name').value;
-  const phone = document.getElementById('c-phone').value;
-  if (!name || !phone) { alert('Будь ласка, введіть ім\'я та телефон'); return; }
-  document.getElementById('contact-section').innerHTML = `
-    <div class="invite-box">
-      <p>✅ <strong>Дякуємо, ${name}!</strong><br>
-      Ми зв'яжемось з вами найближчим часом і розкажемо про «Біблійні основи» — зустрічі, де можна чесно досліджувати ці питання разом.</p>
-    </div>`;
+  document.getElementById("result-profile").textContent = profile;
+  document.getElementById("result-text").textContent = text;
+  document.getElementById("result-verse").innerHTML = verse;
 }
 
 function restartTest() {
-  document.getElementById('screen-result').classList.remove('active');
-  document.getElementById('screen-question').classList.remove('active');
-  document.getElementById('screen-welcome').classList.add('active');
+  showScreen("screen-home");
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
 }
 </script>
 </body>
