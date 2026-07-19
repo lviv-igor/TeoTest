@@ -6,27 +6,31 @@
 <title>ТеоТест</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
+  html, body {
     background: #000;
     color: #fff;
-    font-family: 'Arial', sans-serif;
-    height: 100dvh;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
   }
-  .screen { display: none; flex-direction: column; height: 100dvh; }
+  .screen {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+  }
   .screen.active { display: flex; }
 
-  /* HOME */
+  /* ===== HOME ===== */
   #home {
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    gap: 30px;
+    padding: 5vw;
+    gap: 4vh;
   }
   .home-logo {
-    font-size: clamp(52px, 18vw, 90px);
+    font-size: clamp(44px, 20vw, 100px);
     font-weight: 100;
     letter-spacing: 2px;
     text-align: center;
@@ -35,7 +39,7 @@
   }
   .home-logo span { color: #cc0000; }
   .home-subtitle {
-    font-size: 16px;
+    font-size: clamp(13px, 3.5vw, 18px);
     color: #aaa;
     text-align: center;
     font-weight: 300;
@@ -45,8 +49,8 @@
     background: #cc0000;
     color: #fff;
     border: none;
-    padding: 18px 40px;
-    font-size: 20px;
+    padding: clamp(14px, 3vh, 22px) 40px;
+    font-size: clamp(16px, 4vw, 22px);
     font-weight: 400;
     letter-spacing: 3px;
     cursor: pointer;
@@ -55,35 +59,46 @@
     text-transform: uppercase;
   }
 
-  /* QUESTION SCREEN */
-  #question-screen { justify-content: space-between; }
+  /* ===== QUESTION SCREEN ===== */
+  #question-screen {
+    justify-content: space-between;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* Header */
   .q-header {
+    flex-shrink: 0;
     background: #000;
-    padding: 12px 16px 6px;
+    padding: clamp(6px, 1.5vh, 14px) 16px clamp(4px, 1vh, 10px);
     text-align: center;
     border-bottom: 1px solid #222;
   }
-  .q-logo { font-size: 18px; font-weight: 300; letter-spacing: 2px; }
+  .q-logo { font-size: clamp(14px, 4vw, 20px); font-weight: 300; letter-spacing: 2px; }
   .q-logo span { color: #cc0000; }
-  .q-progress { height: 3px; background: #222; margin-top: 8px; }
+  .q-progress { height: 3px; background: #222; margin-top: 6px; }
   .q-progress-bar { height: 3px; background: #cc0000; transition: width 0.3s; }
 
+  /* Body — займає весь простір між header і footer */
   .q-body {
     flex: 1;
-    padding: 10px 16px 6px;
+    min-height: 0;
+    padding: clamp(6px, 1.5vh, 14px) 16px clamp(4px, 1vh, 10px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
+
   .q-label-row {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 6px;
+    margin-bottom: clamp(4px, 1vh, 10px);
+    flex-shrink: 0;
   }
   .q-label {
-    font-size: 18px;
+    font-size: clamp(13px, 3.5vw, 18px);
     font-weight: 300;
     letter-spacing: 4px;
     color: #aaa;
@@ -94,9 +109,9 @@
     color: #fff;
     border: none;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
+    width: clamp(20px, 5vw, 26px);
+    height: clamp(20px, 5vw, 26px);
+    font-size: clamp(12px, 3vw, 15px);
     font-weight: bold;
     cursor: pointer;
     display: flex;
@@ -104,18 +119,39 @@
     justify-content: center;
     flex-shrink: 0;
   }
+
   .q-text {
-    font-size: clamp(20px, 5.5vw, 28px);
+    font-size: clamp(16px, 4.5vw, 26px);
     font-weight: 300;
-    line-height: 1.25;
-    margin-bottom: 12px;
+    line-height: 1.2;
+    margin-bottom: clamp(6px, 1.5vh, 14px);
     text-transform: uppercase;
+    flex-shrink: 0;
   }
-  .q-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-  .q-option { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 16px; font-weight: 300; }
+
+  /* Варіанти — скролюються якщо не вміщаються */
+  .q-options-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .q-options { display: flex; flex-direction: column; gap: clamp(5px, 1.2vh, 10px); }
+  .q-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: clamp(13px, 3.5vw, 17px);
+    font-weight: 300;
+  }
   .q-option input[type="radio"] {
     appearance: none;
-    width: 20px; height: 20px;
+    -webkit-appearance: none;
+    width: clamp(16px, 4vw, 20px);
+    height: clamp(16px, 4vw, 20px);
     border: 2px solid #fff;
     border-radius: 50%;
     flex-shrink: 0;
@@ -127,35 +163,38 @@
     border: none;
     border-bottom: 1px solid #555;
     color: #fff;
-    font-size: 15px;
+    font-size: clamp(13px, 3.5vw, 16px);
     padding: 2px 0;
     width: 100%;
     outline: none;
   }
+
   .q-notes {
     background: #fff;
     color: #333;
     border: none;
     border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 14px;
+    padding: 7px 10px;
+    font-size: clamp(12px, 3vw, 14px);
     resize: none;
-    height: 60px;
+    height: clamp(44px, 8vh, 70px);
     width: 100%;
     outline: none;
-    margin-top: 4px;
+    margin-top: clamp(4px, 1vh, 10px);
+    flex-shrink: 0;
   }
   .q-notes::placeholder { color: #999; }
 
   /* Scale */
-  .q-scale { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .q-scale { display: flex; gap: clamp(4px, 1.5vw, 8px); flex-wrap: wrap; margin-bottom: clamp(6px, 1.5vh, 12px); }
   .scale-btn {
     background: #222;
     color: #fff;
     border: 1px solid #444;
     border-radius: 4px;
-    width: 38px; height: 38px;
-    font-size: 16px;
+    width: clamp(30px, 8vw, 42px);
+    height: clamp(30px, 8vw, 42px);
+    font-size: clamp(13px, 3.5vw, 17px);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -163,16 +202,16 @@
   }
   .scale-btn.selected { background: #cc0000; border-color: #cc0000; }
 
-  /* NEXT BUTTON */
-  .q-footer { padding: 0; }
+  /* ===== NEXT BUTTON ===== */
+  .q-footer { flex-shrink: 0; }
   .btn-next {
     background: #000;
     color: #fff;
     border: none;
     border-top: 2px solid #333;
     width: 100%;
-    padding: 26px 0;
-    font-size: clamp(32px, 10vw, 52px);
+    padding: clamp(14px, 3.5vh, 28px) 0;
+    font-size: clamp(24px, 8vw, 48px);
     font-weight: 300;
     letter-spacing: 6px;
     cursor: pointer;
@@ -181,50 +220,49 @@
   }
   .btn-next:active { background: #111; }
 
-  /* HINT OVERLAY */
+  /* ===== HINT OVERLAY ===== */
   .hint-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.88);
     z-index: 100;
     align-items: center;
     justify-content: center;
-    padding: 30px;
+    padding: 24px;
   }
   .hint-overlay.active { display: flex; }
   .hint-box {
     background: #111;
     border: 1px solid #cc0000;
     border-radius: 10px;
-    padding: 24px;
+    padding: 22px;
     max-width: 340px;
     width: 100%;
     position: relative;
   }
-  .hint-title { color: #cc0000; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
-  .hint-text { font-size: 15px; font-weight: 300; line-height: 1.6; color: #ddd; }
-  .hint-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
+  .hint-title { color: #cc0000; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+  .hint-text { font-size: clamp(13px, 3.5vw, 15px); font-weight: 300; line-height: 1.6; color: #ddd; }
+  .hint-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
 
-  /* RESULT */
-  #result-screen { justify-content: center; align-items: center; padding: 30px 20px; text-align: center; gap: 20px; }
-  .result-logo { font-size: 22px; font-weight: 300; letter-spacing: 2px; }
+  /* ===== RESULT ===== */
+  #result-screen { justify-content: center; align-items: center; padding: 30px 20px; text-align: center; gap: clamp(12px, 3vh, 24px); }
+  .result-logo { font-size: clamp(18px, 5vw, 24px); font-weight: 300; letter-spacing: 2px; }
   .result-logo span { color: #cc0000; }
-  .result-title { font-size: 26px; font-weight: 300; letter-spacing: 2px; }
-  .result-verse { font-size: 15px; font-weight: 300; color: #ccc; line-height: 1.6; font-style: italic; max-width: 300px; }
-  .result-ref { color: #cc0000; font-size: 13px; margin-top: 4px; }
+  .result-title { font-size: clamp(20px, 6vw, 28px); font-weight: 300; letter-spacing: 2px; }
+  .result-verse { font-size: clamp(13px, 3.5vw, 16px); font-weight: 300; color: #ccc; line-height: 1.6; font-style: italic; max-width: 300px; }
+  .result-ref { color: #cc0000; font-size: clamp(11px, 3vw, 14px); }
   .btn-restart {
     background: #cc0000;
     color: #fff;
     border: none;
-    padding: 16px 40px;
-    font-size: 16px;
+    padding: clamp(12px, 2.5vh, 18px) 40px;
+    font-size: clamp(14px, 3.5vw, 17px);
     letter-spacing: 3px;
     cursor: pointer;
     text-transform: uppercase;
     width: 100%;
     max-width: 300px;
-    margin-top: 10px;
   }
 </style>
 </head>
@@ -268,128 +306,68 @@
 </div>
 
 <script>
-const questionsTheist = [
-  {
-    q: "ЯК БИ ВИ ОПИСАЛИ БОГА?",
-    type: "radio",
-    options: ["Люблячий", "Святий", "Безособистісна Енергія", "Байдужий"],
-    custom: "Ваш варіант",
-    hint: "Це питання розкриває уявлення людини про природу Бога. Відповідь допоможе зрозуміти, з якого кута підходити до розмови про Євангеліє."
-  },
-  {
-    q: "ЧОГО ВІД НАС ОЧІКУЄ БОГ?",
-    type: "radio",
-    options: ["Вірити в Нього", "Не шкодити іншим", "Дотримуватись правил", "Нічого"],
-    custom: "Ваш варіант",
-    hint: "Показує, чи розуміє людина концепцію благодаті. Якщо 'дотримуватись правил' — відкриває розмову про різницю між релігією і стосунками з Богом."
-  },
-  {
-    q: "ЯК ВИ ЗАДОВОЛЬНЯЄТЕ ЙОГО ВИМОГИ?",
-    type: "scale",
-    hint: "Шкала від 1 до 10 показує, наскільки людина вважає себе 'достатньо доброю'. Відкриває розмову про стандарт Бога і потребу в спасінні."
-  },
-  {
-    q: "ЧИ ТІЛЬКИ ОДНА РЕЛІГІЯ ПРИВОДИТЬ ДО ПРАВДИВОГО БОГА?",
-    type: "radio",
+var questionsTheist = [
+  { q: "ЯК БИ ВИ ОПИСАЛИ БОГА?", type: "radio",
+    options: ["Люблячий", "Святий", "Безособистісна Енергія", "Байдужий"], custom: "Ваш варіант",
+    hint: "Це питання розкриває уявлення людини про природу Бога. Відповідь допоможе зрозуміти, з якого кута підходити до розмови про Євангеліє." },
+  { q: "ЧОГО ВІД НАС ОЧІКУЄ БОГ?", type: "radio",
+    options: ["Вірити в Нього", "Не шкодити іншим", "Дотримуватись правил", "Нічого"], custom: "Ваш варіант",
+    hint: "Показує, чи розуміє людина концепцію благодаті. Якщо 'дотримуватись правил' — відкриває розмову про різницю між релігією і стосунками з Богом." },
+  { q: "ЯК ВИ ЗАДОВОЛЬНЯЄТЕ ЙОГО ВИМОГИ?", type: "scale",
+    hint: "Шкала від 1 до 10 показує, наскільки людина вважає себе 'достатньо доброю'. Відкриває розмову про стандарт Бога і потребу в спасінні." },
+  { q: "ЧИ ТІЛЬКИ ОДНА РЕЛІГІЯ ПРИВОДИТЬ ДО ПРАВДИВОГО БОГА?", type: "radio",
     options: ["Так", "Ні", "Не впевнений"],
-    hint: "Розкриває ставлення до ексклюзивності Христа (Ів. 14:6). Якщо 'Ні' — відкриває розмову про відмінність між релігіями."
-  },
-  {
-    q: "ЧИ ВІРИТЕ ВИ У НЕБЕСА (РАЙ)?",
-    type: "radio",
+    hint: "Розкриває ставлення до ексклюзивності Христа (Ів. 14:6). Якщо 'Ні' — відкриває розмову про відмінність між релігіями." },
+  { q: "ЧИ ВІРИТЕ ВИ У НЕБЕСА (РАЙ)?", type: "radio",
     options: ["Так", "Ні", "Вірю в реінкарнацію", "Не впевнений"],
-    hint: "Визначає базове розуміння вічності. Якщо реінкарнація — відкриває розмову про біблійне вчення про смерть і воскресіння."
-  },
-  {
-    q: "ЧИ КОЖЕН ПОТРАПИТЬ НА НЕБЕСА?",
-    type: "radio",
+    hint: "Визначає базове розуміння вічності. Якщо реінкарнація — відкриває розмову про біблійне вчення про смерть і воскресіння." },
+  { q: "ЧИ КОЖЕН ПОТРАПИТЬ НА НЕБЕСА?", type: "radio",
     options: ["Так", "Ні", "Не впевнений", "Раю не існує"],
-    hint: "Показує, чи є розуміння суду і відповідальності. Відкриває тему праведності Бога і необхідності примирення."
-  },
-  {
-    q: "ЧИ ВИ ПОТРАПИТЕ НА НЕБЕСА?",
-    type: "radio",
+    hint: "Показує, чи є розуміння суду і відповідальності. Відкриває тему праведності Бога і необхідності примирення." },
+  { q: "ЧИ ВИ ПОТРАПИТЕ НА НЕБЕСА?", type: "radio",
     options: ["Так", "Ні", "Не впевнений", "Раю не існує"],
-    hint: "Особисте питання. Якщо людина не впевнена — ключовий момент для розмови про впевненість у спасінні через Христа."
-  },
-  {
-    q: "ЧОМУ ВИ ПОТРАПИТЕ ТУДИ АБО ЧОМУ НІ?",
-    type: "radio",
+    hint: "Особисте питання. Якщо людина не впевнена — ключовий момент для розмови про впевненість у спасінні через Христа." },
+  { q: "ЧОМУ ВИ ПОТРАПИТЕ ТУДИ АБО ЧОМУ НІ?", type: "radio",
     options: ["Так, усі туди потраплять", "Так, я хороша людина", "Так, Бог спас мене", "Ні, бо не достатньо хороший", "Раю не існує"],
-    hint: "Центральне питання тесту. 'Так, Бог спас мене' — привід для радості. Інші відповіді — привід пояснити Євангеліє."
-  },
-  {
-    q: "ЧИ ВИ Б ХОТІЛИ ЗНАТИ, ЯК НА ЦІ ПИТАННЯ ВІДПОВІДАЄ БІБЛІЯ?",
-    type: "radio",
+    hint: "Центральне питання тесту. 'Так, Бог спас мене' — привід для радості. Інші відповіді — привід пояснити Євангеліє." },
+  { q: "ЧИ ВИ Б ХОТІЛИ ЗНАТИ, ЯК НА ЦІ ПИТАННЯ ВІДПОВІДАЄ БІБЛІЯ?", type: "radio",
     options: ["Знаю і погоджуюсь", "Знаю і не погоджуюсь", "Не цікаво", "Хотів би довідатись"],
-    hint: "Фінальне питання. Якщо 'Хотів би довідатись' — запрошення поділитись Євангелієм або запросити на Біблійні Основи."
-  }
+    hint: "Фінальне питання. Якщо 'Хотів би довідатись' — запрошення поділитись Євангелієм або запросити на Біблійні Основи." }
 ];
 
-const questionsSkeptic = [
-  {
-    q: "НАЗВІТЬ ОСНОВНІ ПРИЧИНИ, З ЯКИХ ВИ НЕ ВІРИТЕ В БОГА",
-    type: "radio",
-    options: ["Протиріччя з наукою", "Зло і страждання", "Брак доказів", "Багато релігій"],
-    custom: "Ваша версія",
-    hint: "Дізнайтесь головну перешкоду. Це визначає весь подальший діалог і показує, де найбільше болить."
-  },
-  {
-    q: "ЧОМУ ВЗАГАЛІ ЩОСЬ ІСНУЄ, А НЕ ПРОСТО НІЧОГО?",
-    type: "radio",
-    options: ["Завжди існувало", "Створило само себе", "Закони фізики", "Не маю поняття"],
-    custom: "Ваша версія",
-    hint: "Питання про першопричину. Жодна з атеїстичних відповідей не є задовільною — відкриває простір для розмови про Творця."
-  },
-  {
-    q: "ЧИ ВИ БАЧИТЕ ЯКУСЬ ЦІЛЬ ЧИ ЗНАЧЕННЯ В ІСНУВАННІ ВСЕСВІТУ?",
-    type: "radio",
+var questionsSkeptic = [
+  { q: "НАЗВІТЬ ОСНОВНІ ПРИЧИНИ, З ЯКИХ ВИ НЕ ВІРИТЕ В БОГА", type: "radio",
+    options: ["Протиріччя з наукою", "Зло і страждання", "Брак доказів", "Багато релігій"], custom: "Ваша версія",
+    hint: "Дізнайтесь головну перешкоду. Це визначає весь подальший діалог і показує, де найбільше болить." },
+  { q: "ЧОМУ ВЗАГАЛІ ЩОСЬ ІСНУЄ, А НЕ ПРОСТО НІЧОГО?", type: "radio",
+    options: ["Завжди існувало", "Створило само себе", "Закони фізики", "Не маю поняття"], custom: "Ваша версія",
+    hint: "Питання про першопричину. Жодна з атеїстичних відповідей не є задовільною — відкриває простір для розмови про Творця." },
+  { q: "ЧИ ВИ БАЧИТЕ ЯКУСЬ ЦІЛЬ ЧИ ЗНАЧЕННЯ В ІСНУВАННІ ВСЕСВІТУ?", type: "radio",
     options: ["Так", "Ні", "Не впевнений"],
-    hint: "Якщо бачить ціль — звідки вона? Якщо ні — як живе без сенсу? Обидві відповіді відкривають глибоку розмову."
-  },
-  {
-    q: "ЗВІДКИ ВЗЯЛОСЬ ЖИТТЯ НА ЗЕМЛІ?",
-    type: "radio",
-    options: ["Випадковість", "Закони природи", "Позаземне походження", "Не впевнений"],
-    custom: "Ваш варіант",
-    hint: "Навіть 'позаземне походження' лише відсуває проблему — хто створив позаземне життя?"
-  },
-  {
-    q: "ЧИ ІСНУЄ ЗЛО?",
-    type: "radio",
+    hint: "Якщо бачить ціль — звідки вона? Якщо ні — як живе без сенсу? Обидві відповіді відкривають глибоку розмову." },
+  { q: "ЗВІДКИ ВЗЯЛОСЬ ЖИТТЯ НА ЗЕМЛІ?", type: "radio",
+    options: ["Випадковість", "Закони природи", "Позаземне походження", "Не впевнений"], custom: "Ваш варіант",
+    hint: "Навіть 'позаземне походження' лише відсуває проблему — хто створив позаземне життя?" },
+  { q: "ЧИ ІСНУЄ ЗЛО?", type: "radio",
     options: ["Так", "Ні", "Не впевнений"],
-    hint: "Якщо зло існує — потрібен об'єктивний моральний стандарт. Якщо стандарт є — звідки він? Це веде до Бога."
-  },
-  {
-    q: "НА ЧОМУ БАЗУЄТЬСЯ ВАША МОРАЛЬНІСТЬ?",
-    type: "radio",
-    options: ["Ні на чому", "Соціальні норми", "Еволюція", "Почуття"],
-    custom: "Ваш варіант",
-    hint: "Якщо мораль — лише еволюція або почуття, вона відносна. Але люди поводяться так, ніби мораль абсолютна. Звідки це?"
-  },
-  {
-    q: "ЧИ ЛЮДСЬКЕ ЖИТТЯ Є ОСОБЛИВІШИМ ЗА ЖИТТЯ РОСЛИН ЧИ ТВАРИН?",
-    type: "radio",
+    hint: "Якщо зло існує — потрібен об'єктивний моральний стандарт. Якщо стандарт є — звідки він? Це веде до Бога." },
+  { q: "НА ЧОМУ БАЗУЄТЬСЯ ВАША МОРАЛЬНІСТЬ?", type: "radio",
+    options: ["Ні на чому", "Соціальні норми", "Еволюція", "Почуття"], custom: "Ваш варіант",
+    hint: "Якщо мораль — лише еволюція або почуття, вона відносна. Але люди поводяться так, ніби мораль абсолютна. Звідки це?" },
+  { q: "ЧИ ЛЮДСЬКЕ ЖИТТЯ Є ОСОБЛИВІШИМ ЗА ЖИТТЯ РОСЛИН ЧИ ТВАРИН?", type: "radio",
     options: ["Так", "Ні", "Не впевнений"],
-    hint: "Якщо так — чому? З еволюційної точки зору ми просто складніші тварини. Особливість людини вказує на образ Божий (Бут. 1:27)."
-  },
-  {
-    q: "НА СКІЛЬКИ ВИ ПЕРЕКОНАНІ, ЩО БОГА НЕ ІСНУЄ?",
-    type: "scale",
-    hint: "Шкала показує ступінь переконаності. Більшість скептиків — агностики, а не атеїсти. Це відкриває розмову про можливість Бога."
-  },
-  {
-    q: "ЧИ ХОТІЛИ Б ВИ ПОЧУТИ, ЯК ТЕЇСТИ ВІДПОВІДАЮТЬ НА ЦІ ЗАПИТАННЯ?",
-    type: "radio",
+    hint: "Якщо так — чому? З еволюційної точки зору ми просто складніші тварини. Особливість людини вказує на образ Божий (Бут. 1:27)." },
+  { q: "НА СКІЛЬКИ ВИ ПЕРЕКОНАНІ, ЩО БОГА НЕ ІСНУЄ?", type: "scale",
+    hint: "Шкала показує ступінь переконаності. Більшість скептиків — агностики, а не атеїсти. Це відкриває розмову про можливість Бога." },
+  { q: "ЧИ ХОТІЛИ Б ВИ ПОЧУТИ, ЯК ТЕЇСТИ ВІДПОВІДАЮТЬ НА ЦІ ЗАПИТАННЯ?", type: "radio",
     options: ["Так", "Ні"],
-    hint: "Фінальне питання. Якщо 'Так' — чудова можливість поділитись своєю вірою або запросити на розмову."
-  }
+    hint: "Фінальне питання. Якщо 'Так' — чудова можливість поділитись своєю вірою або запросити на розмову." }
 ];
 
-let branch = "";
-let currentQ = 0;
-let questions = [];
-let answers = [];
+var branch = "";
+var currentQ = 0;
+var questions = [];
+var answers = [];
 
 function startTest() {
   showScreen("question-screen");
@@ -397,24 +375,25 @@ function startTest() {
 }
 
 function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(function(s) {
-    s.classList.remove("active");
-  });
+  var screens = document.querySelectorAll(".screen");
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove("active");
   document.getElementById(id).classList.add("active");
 }
 
 function renderFirstQuestion() {
   var body = document.getElementById("qBody");
-  document.getElementById("progressBar").style.width = "10%";
+  document.getElementById("progressBar").style.width = "9%";
   body.innerHTML =
     '<div class="q-label-row">' +
       '<div class="q-label">ЗАПИТАННЯ 1</div>' +
-      '<button class="q-hint-btn" onclick="showHint(\'Це вступне питання визначає гілку тесту. Так — для віруючих, Ні — для скептиків.\')">?</button>' +
+      '<button class="q-hint-btn" onclick="showHint(\'Вступне питання визначає гілку тесту. Так — для віруючих, Ні — для скептиків.\')">?</button>' +
     '</div>' +
     '<div class="q-text">ЧИ ВІРИТЕ ВИ В БОГА?</div>' +
-    '<div class="q-options">' +
-      '<label class="q-option"><input type="radio" name="q0" value="yes"> Так</label>' +
-      '<label class="q-option"><input type="radio" name="q0" value="no"> Ні</label>' +
+    '<div class="q-options-wrap">' +
+      '<div class="q-options">' +
+        '<label class="q-option"><input type="radio" name="q0" value="yes"> Так</label>' +
+        '<label class="q-option"><input type="radio" name="q0" value="no"> Ні</label>' +
+      '</div>' +
     '</div>' +
     '<textarea class="q-notes" placeholder="Додаткові нотатки..."></textarea>';
 }
@@ -438,48 +417,50 @@ function nextQuestion() {
 
 function renderQuestion(idx) {
   var q = questions[idx];
-  var total = questions.length + 1;
-  var progress = Math.round(((idx + 2) / (total + 1)) * 100);
+  var progress = Math.round(((idx + 2) / (questions.length + 2)) * 100);
   document.getElementById("progressBar").style.width = progress + "%";
-
   var body = document.getElementById("qBody");
+
   var html =
     '<div class="q-label-row">' +
       '<div class="q-label">ЗАПИТАННЯ ' + (idx + 2) + '</div>' +
       '<button class="q-hint-btn" onclick=\'showHint(' + JSON.stringify(q.hint) + ')\'>?</button>' +
     '</div>' +
-    '<div class="q-text">' + q.q + '</div>';
+    '<div class="q-text">' + q.q + '</div>' +
+    '<div class="q-options-wrap">';
 
   if (q.type === "radio") {
     html += '<div class="q-options">';
     for (var i = 0; i < q.options.length; i++) {
-      var checked = (answers[idx] && answers[idx].value === q.options[i]) ? "checked" : "";
-      html += '<label class="q-option"><input type="radio" name="qr" value="' + q.options[i] + '" ' + checked + '> ' + q.options[i] + '</label>';
+      var chk = (answers[idx] && answers[idx].value === q.options[i]) ? " checked" : "";
+      html += '<label class="q-option"><input type="radio" name="qr" value="' + q.options[i] + '"' + chk + '> ' + q.options[i] + '</label>';
     }
     if (q.custom) {
-      var customVal = (answers[idx] && answers[idx].custom) ? answers[idx].custom : "";
-      var customChecked = (answers[idx] && answers[idx].value === "__custom__") ? "checked" : "";
-      html += '<label class="q-option"><input type="radio" name="qr" value="__custom__" ' + customChecked + '> ' +
-        '<input class="q-custom-input" id="customInput" type="text" placeholder="' + q.custom + '" value="' + customVal + '"></label>';
+      var cVal = (answers[idx] && answers[idx].custom) ? answers[idx].custom : "";
+      var cChk = (answers[idx] && answers[idx].value === "__custom__") ? " checked" : "";
+      html += '<label class="q-option"><input type="radio" name="qr" value="__custom__"' + cChk + '> ' +
+        '<input class="q-custom-input" id="customInput" type="text" placeholder="' + q.custom + '" value="' + cVal + '"></label>';
     }
     html += '</div>';
   } else if (q.type === "scale") {
-    var savedScale = answers[idx] ? answers[idx].value : null;
+    var saved = answers[idx] ? answers[idx].value : null;
     html += '<div class="q-scale">';
     for (var j = 1; j <= 10; j++) {
-      var sel2 = (savedScale == j) ? "selected" : "";
-      html += '<button class="scale-btn ' + sel2 + '" onclick="selectScale(this,' + j + ')">' + j + '</button>';
+      var sel2 = (saved == j) ? " selected" : "";
+      html += '<button class="scale-btn' + sel2 + '" onclick="selectScale(this,' + j + ')">' + j + '</button>';
     }
     html += '</div>';
   }
 
+  html += '</div>';
   html += '<textarea class="q-notes" placeholder="Додаткові нотатки...">' +
     (answers[idx] && answers[idx].notes ? answers[idx].notes : "") + '</textarea>';
   body.innerHTML = html;
 }
 
 function selectScale(btn, val) {
-  document.querySelectorAll(".scale-btn").forEach(function(b) { b.classList.remove("selected"); });
+  var btns = document.querySelectorAll(".scale-btn");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("selected");
   btn.classList.add("selected");
   btn.dataset.val = val;
 }
@@ -490,15 +471,11 @@ function saveAnswer(idx) {
   var notes = notesEl ? notesEl.value : "";
   if (q.type === "radio") {
     var sel = document.querySelector('input[name="qr"]:checked');
-    var customInput = document.getElementById("customInput");
-    answers[idx] = {
-      value: sel ? sel.value : null,
-      custom: customInput ? customInput.value : "",
-      notes: notes
-    };
-  } else if (q.type === "scale") {
-    var selBtn = document.querySelector(".scale-btn.selected");
-    answers[idx] = { value: selBtn ? (selBtn.dataset.val || selBtn.textContent) : null, notes: notes };
+    var ci = document.getElementById("customInput");
+    answers[idx] = { value: sel ? sel.value : null, custom: ci ? ci.value : "", notes: notes };
+  } else {
+    var sb = document.querySelector(".scale-btn.selected");
+    answers[idx] = { value: sb ? (sb.dataset.val || sb.textContent) : null, notes: notes };
   }
 }
 
@@ -506,13 +483,10 @@ function showHint(text) {
   document.getElementById("hintText").textContent = text;
   document.getElementById("hintOverlay").classList.add("active");
 }
-
 function closeHint(e) {
-  if (e.target === document.getElementById("hintOverlay")) {
+  if (e.target === document.getElementById("hintOverlay"))
     document.getElementById("hintOverlay").classList.remove("active");
-  }
 }
-
 function closeHintBtn() {
   document.getElementById("hintOverlay").classList.remove("active");
 }
@@ -520,13 +494,13 @@ function closeHintBtn() {
 function showResult() {
   showScreen("result-screen");
   var title, verse, ref;
-  var lastAns = answers[answers.length - 1];
+  var last = answers[answers.length - 1];
   if (branch === "theist") {
-    if (lastAns && lastAns.value === "Хотів би довідатись") {
+    if (last && last.value === "Хотів би довідатись") {
       title = "ВІДКРИТЕ СЕРЦЕ";
       verse = "Бо так полюбив Бог світ, що дав Сина Свого Єдинородного, щоб кожен, хто вірує в Нього, не загинув, але мав вічне життя.";
       ref = "Іван 3:16";
-    } else if (lastAns && lastAns.value === "Так, Бог спас мене") {
+    } else if (last && last.value === "Так, Бог спас мене") {
       title = "ВПЕВНЕНИЙ У ВІРІ";
       verse = "Бо благодаттю ви спасені через віру, і це не від вас — це дар Божий.";
       ref = "Ефесян 2:8";
@@ -536,7 +510,7 @@ function showResult() {
       ref = "Ісая 55:6";
     }
   } else {
-    if (lastAns && lastAns.value === "Так") {
+    if (last && last.value === "Так") {
       title = "ШУКАЧ ІСТИНИ";
       verse = "Шукайте і знайдете; стукайте і відчинять вам.";
       ref = "Матвія 7:7";
@@ -552,10 +526,7 @@ function showResult() {
 }
 
 function restartTest() {
-  branch = "";
-  currentQ = 0;
-  questions = [];
-  answers = [];
+  branch = ""; currentQ = 0; questions = []; answers = [];
   showScreen("home");
 }
 </script>
